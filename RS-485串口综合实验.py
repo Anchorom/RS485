@@ -66,17 +66,13 @@ class MyDevice:
     # 串口监测
     def is_port_connected(self):
         ports = list(serial.tools.list_ports.comports())
-        if self.__port__ and self.__port__.port in [
-            port.device for port in ports
-        ]:
+        if self.__port__ and self.__port__.port in [port.device for port in ports]:
             return True
         return False
 
     # 检测下位机设备
     def check_devices(self, __addr__):
-        __data__ = [
-            self.header, __addr__, self.Fun_CheckSlave, self.Check_Content
-        ]
+        __data__ = [self.header, __addr__, self.Fun_CheckSlave, self.Check_Content]
         __data__.append(sum(__data__))
         for p in range(5):
             self.__port__.write(__data__)
@@ -105,10 +101,7 @@ class MyDevice:
         reading = self.__port__.read(5)  # 读取串口数据
         if reading:
             hex_data = binascii.hexlify(reading).decode('utf-8')
-            __data__ = [
-                hex_data[index:index + 2]
-                for index in range(0, len(hex_data), 2)
-            ]
+            __data__ = [hex_data[index:index + 2] for index in range(0, len(hex_data), 2)]
             return __data__
         return []
 
@@ -130,8 +123,7 @@ class MyDevice:
                         return ret_data[3]
                     else:
                         return -2
-                elif ret_data[2] == self.Fun_ReadInfo and ret_data[
-                    3] == self.ErrorInfo:
+                elif ret_data[2] == self.Fun_ReadInfo and ret_data[3] == self.ErrorInfo:
                     return -3  # 从机未确认编号
                 elif ret_data[3] == self.ErrorInfo:
                     return -2  # 分数大于100或者未确认分数
