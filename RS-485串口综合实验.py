@@ -180,6 +180,10 @@ class MyDevice:
     # 获得当前已知分数的平均值
     def get_average_score(self):
         if self.scores:
+            res = deepcopy(self.scores)
+            for _id, score in res.items():
+                if score < 0:
+                    del self.scores[_id]
             total_scores = [scores
                             for scores in self.scores.values()]  # 所有分数的列表
             average = sum(total_scores) / len(
